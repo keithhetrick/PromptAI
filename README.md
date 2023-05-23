@@ -1,7 +1,5 @@
 # PromptAI
 
-## Description
-
 PromptAI is a full-stack, CRUD application that allows users to create and share prompts for creative writing. Users can create an account, log in, and create prompts. Users can also view prompts created by other users and save them to their account. Users can also view their saved prompts and delete them from their account.
 
 ## PromptAI built with:
