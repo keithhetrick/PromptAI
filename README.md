@@ -11,4 +11,5 @@ PromptAI is a full-stack, CRUD application that allows users to create and share
 - [MongoDB](https://www.mongodb.com/)
 - [Env](https://www.npmjs.com/package/env)
 - [GoogleAuth](https://developers.google.com/identity/protocols/oauth2)
+- [NextAuth](https://next-auth.js.org/)
 - [BCrypt](https://www.npmjs.com/package/bcrypt)

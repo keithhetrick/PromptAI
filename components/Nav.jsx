@@ -41,7 +41,7 @@ const Nav = () => {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  const firstName = session?.user?.name?.split(" ")[0] || "User";
+  // const firstName = session?.user?.name?.split(" ")[0] || "User";
 
   const DESKTOP_VIEW = (
     <div className="sm:flex hidden">
@@ -103,7 +103,8 @@ const Nav = () => {
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                {firstName}'s Profile
+                {/* {firstName}'s Profile */}
+                My Profile
               </Link>
 
               <Link

@@ -47,7 +47,9 @@ const UpdatePrompt = () => {
       });
 
       if (response.ok) {
-        router.push("/");
+        useEffect(() => {
+          router.push("/");
+        }, []);
       }
     } catch (error) {
       console.log(error);
