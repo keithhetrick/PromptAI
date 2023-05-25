@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import loader from "@public/assets/icons/loader.svg";
 
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
-    <div className='mt-16 prompt_layout'>
-      {data.map((post) => (
+    <div className="mt-12 prompt_layout">
+      {data?.map((post) => (
         <PromptCard
-          key={post._id}
+          key={post?._id}
           post={post}
           handleTagClick={handleTagClick}
         />
@@ -21,11 +22,12 @@ const PromptCardList = ({ data, handleTagClick }) => {
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
 
-  // Search states
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [searchDebouncer, setSearchDebouncer] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  // Fetch all posts
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt");
     const data = await response.json();
@@ -33,31 +35,40 @@ const Feed = () => {
     setAllPosts(data);
   };
 
+  // Fetch posts on page load
   useEffect(() => {
     fetchPosts();
+
+    return () => setAllPosts([]);
   }, []);
 
+  // Filter posts based on search text
   const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    return allPosts.filter(
+    const regex = new RegExp(searchtext, "gi"); // g: global, i: case insensitive
+    return allPosts?.filter(
       (item) =>
-        regex.test(item.creator.username) ||
-        regex.test(item.tag) ||
-        regex.test(item.prompt)
+        regex.test(item?.creator?.username) ||
+        regex.test(item?.tag) ||
+        regex.test(item?.prompt)
     );
   };
 
   const handleSearchChange = (e) => {
-    clearTimeout(searchTimeout);
-    setSearchText(e.target.value);
+    clearTimeout(searchDebouncer);
+    setSearchText(e?.target?.value);
 
-    // debounce method
-    setSearchTimeout(
+    setSearchDebouncer(
       setTimeout(() => {
-        const searchResult = filterPrompts(e.target.value);
+        const searchResult = filterPrompts(e?.target?.value);
         setSearchedResults(searchResult);
       }, 500)
     );
+
+    setLoading(true);
+
+    if (e.target.value.length === 0) {
+      setLoading(false);
+    }
   };
 
   const handleTagClick = (tagName) => {
@@ -67,28 +78,49 @@ const Feed = () => {
     setSearchedResults(searchResult);
   };
 
+  const handleClearSearch = () => {
+    setSearchText("");
+    setSearchedResults([]);
+    setLoading(false);
+  };
+
   return (
-    <section className='feed'>
-      <form className='relative w-full flex-center'>
+    <section className="feed">
+      <form className="relative w-full flex-center">
         <input
-          type='text'
-          placeholder='Search for a tag or a username'
+          type="text"
+          placeholder="Search for a tag or a username"
           value={searchText}
           onChange={handleSearchChange}
           required
-          className='search_input peer'
+          className="search_input peer"
         />
+
+        {searchText?.length > 0 ? (
+          <button
+            type="button"
+            onClick={handleClearSearch}
+            className="search_input_clear"
+          >
+            Clear
+          </button>
+        ) : null}
       </form>
 
-      {/* All Prompts */}
-      {searchText ? (
-        <PromptCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
-      ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
-      )}
+      {/* {searchedResults?.length === 0 ? (
+        <p className="text-center text-gray-500">
+        No results found for <span className="font-bold">{searchText}</span>
+        </p>
+      ) : null} */}
+
+      {/* {loading === true ? (
+        <img src={loader?.src} alt="loading" className="w-10 h-10 mx-auto" />
+      ) : ( */}
+      <PromptCardList
+        data={searchedResults?.length > 0 ? searchedResults : allPosts}
+        handleTagClick={handleTagClick}
+      />
+      {/* )} */}
     </section>
   );
 };
