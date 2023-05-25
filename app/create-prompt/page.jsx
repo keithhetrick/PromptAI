@@ -10,7 +10,7 @@ const CreatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [loggedIn, setLoggedIn] = useState(session?.user?.name ? true : false);
+  // const [loggedIn, setLoggedIn] = useState(session?.user?.name ? true : false);
 
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
@@ -18,16 +18,16 @@ const CreatePrompt = () => {
     tag: "",
   });
 
-  // Login check
-  if (!loggedIn) {
-    router.push("/");
-  } else {
-    useEffect(() => {
-      setLoggedIn(true);
+  // // Login check
+  // if (!loggedIn) {
+  //   router.push("/");
+  // } else {
+  //   useEffect(() => {
+  //     setLoggedIn(true);
 
-      return () => setLoggedIn(false);
-    }, [session]);
-  }
+  //     return () => setLoggedIn(false);
+  //   }, [session]);
+  // }
 
   // Create post
   const createPrompt = async (e) => {
@@ -46,7 +46,7 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        router.push("/");
+        router?.push("/");
       }
     } catch (error) {
       console.error("\nERROR: ", error);
