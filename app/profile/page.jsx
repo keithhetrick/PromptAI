@@ -1,41 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Profile from "@components/Profile";
 
 const MyProfile = () => {
   const router = useRouter();
-  // handle router errors
-  if (!router) return null;
-  if (router?.isFallback) {
-    return <div>Loading...</div>;
-  }
-
   const { data: session } = useSession();
 
-  const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
 
-  // Fetch User's posts
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${session?.user?.id}/posts`);
+      const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
 
-      setPosts(data);
+      setMyPosts(data);
     };
 
-    if (session?.user?.id) {
-      fetchPosts();
-    }
-
-    return () => setPosts([]);
-  }, []);
+    if (session?.user.id) fetchPosts();
+  }, [session?.user.id]);
 
   const handleEdit = (post) => {
-    router?.push(`/update-prompt?id=${post?._id}`);
+    router.push(`/update-prompt?id=${post._id}`);
   };
 
   const handleDelete = async (post) => {
@@ -45,39 +34,27 @@ const MyProfile = () => {
 
     if (hasConfirmed) {
       try {
-        const response = await fetch(`/api/prompt/${post?._id.toString()}`, {
+        await fetch(`/api/prompt/${post._id.toString()}`, {
           method: "DELETE",
         });
 
-        if (response.ok) {
-          setPosts((prevPosts) =>
-            prevPosts.filter((p) => p?._id !== post?._id)
-          );
-        }
+        const filteredPosts = myPosts.filter((item) => item._id !== post._id);
+
+        setMyPosts(filteredPosts);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
   };
 
   return (
-    <>
-      <div className="w-full">
-        <button
-          onClick={() => router?.back()}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4  rounded flex justify-start"
-        >
-          Go back
-        </button>
-      </div>
-      <Profile
-        name={session?.user?.name || "User"}
-        desc="Welcome to your personalized profile page"
-        data={posts}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-      />
-    </>
+    <Profile
+      name='My'
+      desc='Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination'
+      data={myPosts}
+      handleEdit={handleEdit}
+      handleDelete={handleDelete}
+    />
   );
 };
 

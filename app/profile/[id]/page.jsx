@@ -2,18 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 import Profile from "@components/Profile";
 
 const UserProfile = ({ params }) => {
-  const router = useRouter();
-  // handle router errors
-  if (!router) return null;
-  if (router?.isFallback) {
-    return <div>Loading...</div>;
-  }
-
   const searchParams = useSearchParams();
   const userName = searchParams.get("name");
 
@@ -28,26 +20,14 @@ const UserProfile = ({ params }) => {
     };
 
     if (params?.id) fetchPosts();
-
-    return () => setUserPosts([]);
-  }, [params?.id]);
+  }, [params.id]);
 
   return (
-    <>
-      <div className="w-full">
-        <button
-          onClick={() => router?.back()}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4  rounded flex justify-start"
-        >
-          Go back
-        </button>
-      </div>
-      <Profile
-        name={userName}
-        desc={`Welcome to ${userName}'s personalized profile page. Explore ${userName}'s exceptional prompts and be inspired by the power of their imagination`}
-        data={userPosts}
-      />
-    </>
+    <Profile
+      name={userName}
+      desc={`Welcome to ${userName}'s personalized profile page. Explore ${userName}'s exceptional prompts and be inspired by the power of their imagination`}
+      data={userPosts}
+    />
   );
 };
 
