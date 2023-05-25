@@ -7,6 +7,12 @@ import Form from "@components/Form";
 
 const UpdatePrompt = () => {
   const router = useRouter();
+  // handle router errors
+  if (!router) return null;
+  if (router?.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const searchParams = useSearchParams();
   const promptId = searchParams.get("id");
 
@@ -48,7 +54,7 @@ const UpdatePrompt = () => {
 
       if (response.ok) {
         useEffect(() => {
-          router.push("/");
+          router?.push("/");
         }, []);
       }
     } catch (error) {

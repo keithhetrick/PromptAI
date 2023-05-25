@@ -8,6 +8,12 @@ import Profile from "@components/Profile";
 
 const MyProfile = () => {
   const router = useRouter();
+  // handle router errors
+  if (!router) return null;
+  if (router?.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const { data: session } = useSession();
 
   const [posts, setPosts] = useState([]);
@@ -29,7 +35,7 @@ const MyProfile = () => {
   }, []);
 
   const handleEdit = (post) => {
-    router.push(`/update-prompt?id=${post?._id}`);
+    router?.push(`/update-prompt?id=${post?._id}`);
   };
 
   const handleDelete = async (post) => {

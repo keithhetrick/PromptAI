@@ -6,9 +6,15 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
 const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
+  const router = useRouter();
+  // handle router errors
+  if (!router) return null;
+  if (router?.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const { data: session } = useSession();
   const pathName = usePathname();
-  const router = useRouter();
 
   const [copied, setCopied] = useState("");
 
@@ -16,9 +22,9 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
     console.log(post);
 
     if (post?.creator?._id === session?.user?.id)
-      return router.push("/profile");
+      return router?.push("/profile");
 
-    router.push(
+    router?.push(
       `/profile/${post?.creator?._id}?name=${post?.creator?.username}`
     );
   };

@@ -8,6 +8,12 @@ import Profile from "@components/Profile";
 
 const UserProfile = ({ params }) => {
   const router = useRouter();
+  // handle router errors
+  if (!router) return null;
+  if (router?.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const searchParams = useSearchParams();
   const userName = searchParams.get("name");
 
