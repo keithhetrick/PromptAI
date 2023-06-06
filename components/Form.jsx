@@ -7,13 +7,10 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   const [togglePrompt, setTogglePrompt] = useState(false);
   const [randomPrompt, setRandomPrompt] = useState("");
 
-  // generate a random prompt for ChatGPT
-  const generatePrompt = () => {
+  const generateRandomPrompt = () => {
     setRandomPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
 
     togglePrompt ? setTogglePrompt(false) : setTogglePrompt(true);
-
-    console.log("\nRANDOM PROMPT TEST INSIDE FUNCTION\n", randomPrompt);
 
     return randomPrompt;
   };
@@ -22,8 +19,6 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
     setRandomPrompt("");
     setTogglePrompt(false);
   };
-
-  console.log("\nRANDOM PROMPT TEST OUTSIDE FUNCTION\n", randomPrompt);
 
   return (
     <section className="w-full max-w-full flex-start flex-col">
@@ -43,7 +38,11 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           <span className="font-satoshi font-semibold text-base text-gray-700">
             Your AI Prompt
           </span>
-          <button type="button" onClick={generatePrompt} className="form_input">
+          <button
+            type="button"
+            onClick={generateRandomPrompt}
+            className="form_input"
+          >
             Generate Random Prompt
           </button>
           <button type="button" onClick={clearPrompt} className="form_input">
