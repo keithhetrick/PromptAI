@@ -43,31 +43,29 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           <span className="font-satoshi font-semibold text-base text-gray-700">
             Your AI Prompt
           </span>
-
-          {/* <button type="button" onClick={generatePrompt} className="form_input">
+          <button type="button" onClick={generatePrompt} className="form_input">
             Generate Random Prompt
           </button>
-
           <button type="button" onClick={clearPrompt} className="form_input">
             Clear Prompt
-          </button> */}
+          </button>
 
-          {/* {togglePrompt === true && randomPrompt?.length === 0 ? ( */}
-          <textarea
-            value={post?.prompt}
-            onChange={(e) => setPost({ ...post, prompt: e?.target?.value })}
-            placeholder="Write a prompt here..."
-            required
-            className="form_textarea"
-          />
-          {/* ) : (
+          {togglePrompt === true && randomPrompt?.length === 0 ? (
+            <textarea
+              value={post?.prompt}
+              onChange={(e) => setPost({ ...post, prompt: e?.target?.value })}
+              placeholder="Write a prompt here..."
+              required
+              className="form_textarea"
+            />
+          ) : (
             <textarea
               value={randomPrompt?.length > 0 ? randomPrompt : post?.prompt}
               onChange={(e) => setPost({ ...post, prompt: e?.target?.value })}
               placeholder={randomPrompt}
               className="form_textarea"
             />
-          )} */}
+          )}
         </label>
 
         <label>
