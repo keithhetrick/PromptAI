@@ -1,6 +1,30 @@
 import Link from "next/link";
+import { useState } from "react";
+
+import prompts from "../utils/index";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const [togglePrompt, setTogglePrompt] = useState(false);
+  const [randomPrompt, setRandomPrompt] = useState("");
+
+  // generate a random prompt for ChatGPT
+  const generatePrompt = () => {
+    setRandomPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
+
+    togglePrompt ? setTogglePrompt(false) : setTogglePrompt(true);
+
+    console.log("\nRANDOM PROMPT TEST INSIDE FUNCTION\n", randomPrompt);
+
+    return randomPrompt;
+  };
+
+  const clearPrompt = () => {
+    setRandomPrompt("");
+    setTogglePrompt(false);
+  };
+
+  console.log("\nRANDOM PROMPT TEST OUTSIDE FUNCTION\n", randomPrompt);
+
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -20,13 +44,30 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             Your AI Prompt
           </span>
 
+          {/* <button type="button" onClick={generatePrompt} className="form_input">
+            Generate Random Prompt
+          </button>
+
+          <button type="button" onClick={clearPrompt} className="form_input">
+            Clear Prompt
+          </button> */}
+
+          {/* {togglePrompt === true && randomPrompt?.length === 0 ? ( */}
           <textarea
             value={post?.prompt}
             onChange={(e) => setPost({ ...post, prompt: e?.target?.value })}
-            placeholder="Write your prompt here..."
+            placeholder="Write a prompt here..."
             required
             className="form_textarea"
           />
+          {/* ) : (
+            <textarea
+              value={randomPrompt?.length > 0 ? randomPrompt : post?.prompt}
+              onChange={(e) => setPost({ ...post, prompt: e?.target?.value })}
+              placeholder={randomPrompt}
+              className="form_textarea"
+            />
+          )} */}
         </label>
 
         <label>

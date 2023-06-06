@@ -84,6 +84,15 @@ const Feed = () => {
     setLoading(false);
   };
 
+  // timeout for search debouncer
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [searchText]);
+
   return (
     <section className="feed">
       <form className="relative w-full flex-center">
@@ -107,20 +116,21 @@ const Feed = () => {
         ) : null}
       </form>
 
-      {/* {searchedResults?.length === 0 ? (
-        <p className="text-center text-gray-500">
-        No results found for <span className="font-bold">{searchText}</span>
+      {searchedResults?.length === 0 && searchText?.length > 0 ? (
+        <p className="text-center text-gray-500 text-sm mt-5">
+          No results found for{" "}
+          <span className="font-semibold">{searchText}</span>
         </p>
-      ) : null} */}
+      ) : null}
 
-      {/* {loading === true ? (
+      {loading === true ? (
         <img src={loader?.src} alt="loading" className="w-10 h-10 mx-auto" />
-      ) : ( */}
-      <PromptCardList
-        data={searchedResults?.length > 0 ? searchedResults : allPosts}
-        handleTagClick={handleTagClick}
-      />
-      {/* )} */}
+      ) : (
+        <PromptCardList
+          data={searchedResults?.length > 0 ? searchedResults : allPosts}
+          handleTagClick={handleTagClick}
+        />
+      )}
     </section>
   );
 };
