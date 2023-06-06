@@ -3,6 +3,8 @@ import { useState } from "react";
 
 import prompts from "../utils/index";
 
+// console.log("\nPrompt length", prompts?.length);
+
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   const [togglePrompt, setTogglePrompt] = useState(false);
   const [randomPrompt, setRandomPrompt] = useState("");
